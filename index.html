@@ -5,7 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Pedido de Comida Tailandesa</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
   
   body { 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -14,23 +18,34 @@
     padding: 20px;
     line-height: 1.6;
   }
+
+  .logo img {
+    display: block;
+    max-width: 120px;
+    margin: 0 auto 20px;
+  }
+
+  .dish-images {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 4%;
+  }
+
+  .dish-images img {
+    width: 48%;
+    height: 200px;
+    border-radius: 15px;
+    object-fit: cover;
+  }
   
   .container {
-    max-width: 500px;
+    max-width: 450px;
     margin: 0 auto;
     background: white;
     border-radius: 20px;
     padding: 30px 25px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-  }
-
-  .logo {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  .logo img {
-    width: 120px;
-    height: auto;
   }
   
   h1 { 
@@ -38,25 +53,11 @@
     font-size: 28px;
     font-weight: 700;
     text-align: center;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
     border-bottom: 3px solid #e74c3c;
   }
-
-  .dish-images {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  .dish-images img {
-    width: 48%;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  }
-
+  
   .delivery-section {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     padding: 20px;
@@ -79,7 +80,6 @@
     font-size: 16px;
     background: white;
     margin-bottom: 15px;
-    width: 100%;
     transition: border-color 0.3s ease;
   }
   
@@ -89,7 +89,9 @@
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
   }
   
-  #menu { margin-bottom: 25px; }
+  #menu {
+    margin-bottom: 25px;
+  }
   
   .menu-item { 
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -108,6 +110,7 @@
     font-weight: 600;
     color: #2c3e50;
     flex: 1;
+    min-width: auto;
     margin: 0;
   }
   
@@ -119,6 +122,7 @@
     text-align: center;
     font-size: 16px;
     font-weight: 600;
+    color: #2c3e50;
     background: white;
     margin: 0;
   }
@@ -136,8 +140,13 @@
     margin-bottom: 25px;
   }
   
+  .customer-section p {
+    margin: 0;
+  }
+  
   .customer-section label {
-    display: block;
+    display: inline-block;
+    min-width: 200px;
     font-weight: 600;
     color: #2c3e50;
     margin-bottom: 8px;
@@ -181,29 +190,59 @@
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
   }
-
+  
   @media (max-width: 480px) {
+    body {
+      padding: 10px;
+    }
+    
+    .container {
+      padding: 20px 15px;
+      border-radius: 15px;
+    }
+
     .dish-images {
       flex-direction: column;
     }
+
     .dish-images img {
       width: 100%;
-      height: 180px;
+      height: auto;
+    }
+    
+    .menu-item {
+      flex-direction: column;
+      gap: 15px;
+      align-items: stretch;
+    }
+    
+    .menu-item input {
+      width: 100%;
+      height: 50px;
+    }
+    
+    .delivery-section label,
+    .customer-section label {
+      min-width: auto;
+      display: block;
+      margin-bottom: 8px;
     }
   }
 </style>
 </head>
 <body>
-<div class="container">
-  <div class="logo">
-    <img src="khao logo.png" alt="Khao Niao Logo">
-  </div>
-  <h1>Menú Tailandés</h1>
 
-  <div class="dish-images">
-    <img src="pad.jpg" alt="Pad Thai">
-    <img src="rice.jpg" alt="Arroz Thai">
-  </div>
+<div class="logo">
+  <img src="khao%20logo.png" alt="Khao Niao Logo">
+</div>
+
+<div class="dish-images">
+  <img src="pad.jpg" alt="Pad Thai">
+  <img src="rice.jpg" alt="Arroz Thai">
+</div>
+
+<div class="container">
+  <h1>Menú Tailandés</h1>
 
   <div class="delivery-section">
     <label for="deliveryDate">Fecha del Pedido:</label>
@@ -243,12 +282,14 @@
   </div>
 
   <div class="customer-section">
-    <label>Nombre Completo:</label>
-    <input type="text" id="name">
-    <label>WhatsApp:</label>
-    <input type="text" id="phone">
-    <label>Notas:</label>
-    <input type="text" id="notes">
+    <p>
+      <label>Nombre Completo:</label>
+      <input type="text" id="name"><br>
+      <label>WhatsApp:</label>
+      <input type="text" id="phone"><br>
+      <label>Notas:</label>
+      <input type="text" id="notes">
+    </p>
   </div>
 
   <button onclick="submitOrder()">Enviar Pedido</button>
@@ -256,6 +297,13 @@
 
 <script>
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbznFNKiUaSmXsiKSdVW4WUKYF9aLynFvvOujl7lj9x0n9e188qK0v47CD7A-KveRYNxkw/exec";
+
+// Auto-fill tomorrow's date
+document.addEventListener("DOMContentLoaded", () => {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  document.getElementById("deliveryDate").value = tomorrow.toISOString().split("T")[0];
+});
 
 async function submitOrder() {
   const deliveryDate = document.getElementById("deliveryDate").value;
