@@ -10,44 +10,40 @@
     padding: 0;
     box-sizing: border-box;
   }
-  
-  body { 
+
+  body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
+    background-color: black;
+    background-image: url('pad.jpg'), url('rice.jpg');
+    background-position: left center, right center;
+    background-size: 50% 100%, 50% 100%;
+    background-repeat: no-repeat, no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 20px;
-    line-height: 1.6;
   }
 
   .logo img {
     display: block;
     max-width: 120px;
     margin: 0 auto 20px;
+    z-index: 2;
+    position: relative;
   }
 
-  .dish-images {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    gap: 4%;
-  }
-
-  .dish-images img {
-    width: 48%;
-    height: 200px;
-    border-radius: 15px;
-    object-fit: cover;
-  }
-  
   .container {
     max-width: 450px;
-    margin: 0 auto;
+    width: 100%;
     background: white;
     border-radius: 20px;
     padding: 30px 25px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    z-index: 2;
+    position: relative;
   }
-  
+
   h1 { 
     color: #2c3e50;
     font-size: 28px;
@@ -57,14 +53,14 @@
     padding-bottom: 15px;
     border-bottom: 3px solid #e74c3c;
   }
-  
+
   .delivery-section {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     padding: 20px;
     border-radius: 15px;
     margin-bottom: 25px;
   }
-  
+
   .delivery-section label {
     display: inline-block;
     min-width: 150px;
@@ -72,7 +68,7 @@
     color: #2c3e50;
     margin-bottom: 5px;
   }
-  
+
   .delivery-section input, .delivery-section select {
     padding: 12px;
     border: 2px solid #dee2e6;
@@ -82,17 +78,17 @@
     margin-bottom: 15px;
     transition: border-color 0.3s ease;
   }
-  
+
   .delivery-section input:focus, .delivery-section select:focus {
     outline: none;
     border-color: #667eea;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
   }
-  
+
   #menu {
     margin-bottom: 25px;
   }
-  
+
   .menu-item { 
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     margin-bottom: 15px;
@@ -104,7 +100,7 @@
     justify-content: space-between;
     align-items: center;
   }
-  
+
   .menu-item label {
     font-size: 16px;
     font-weight: 600;
@@ -113,7 +109,7 @@
     min-width: auto;
     margin: 0;
   }
-  
+
   .menu-item input { 
     width: 70px;
     height: 45px;
@@ -126,24 +122,20 @@
     background: white;
     margin: 0;
   }
-  
+
   .menu-item input:focus {
     outline: none;
     border-color: #e74c3c;
     box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
   }
-  
+
   .customer-section {
     background: linear-gradient(135deg, #f1f3f4 0%, #e8eaed 100%);
     padding: 25px;
     border-radius: 15px;
     margin-bottom: 25px;
   }
-  
-  .customer-section p {
-    margin: 0;
-  }
-  
+
   .customer-section label {
     display: inline-block;
     min-width: 200px;
@@ -151,7 +143,7 @@
     color: #2c3e50;
     margin-bottom: 8px;
   }
-  
+
   .customer-section input[type="text"] {
     width: 100%;
     padding: 15px;
@@ -162,13 +154,13 @@
     margin-bottom: 15px;
     transition: border-color 0.3s ease;
   }
-  
+
   .customer-section input[type="text"]:focus {
     outline: none;
     border-color: #667eea;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
   }
-  
+
   button { 
     width: 100%;
     padding: 18px 15px;
@@ -184,48 +176,18 @@
     box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
     transition: all 0.3s ease;
   }
-  
+
   button:hover { 
     background: linear-gradient(135deg, #218838 0%, #1ea080 100%);
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
   }
-  
-  @media (max-width: 480px) {
+
+  @media (max-width: 768px) {
     body {
-      padding: 10px;
-    }
-    
-    .container {
-      padding: 20px 15px;
-      border-radius: 15px;
-    }
-
-    .dish-images {
-      flex-direction: column;
-    }
-
-    .dish-images img {
-      width: 100%;
-      height: auto;
-    }
-    
-    .menu-item {
-      flex-direction: column;
-      gap: 15px;
-      align-items: stretch;
-    }
-    
-    .menu-item input {
-      width: 100%;
-      height: 50px;
-    }
-    
-    .delivery-section label,
-    .customer-section label {
-      min-width: auto;
-      display: block;
-      margin-bottom: 8px;
+      background-size: cover;
+      background-position: center;
+      background-image: url('pad.jpg');
     }
   }
 </style>
@@ -233,12 +195,7 @@
 <body>
 
 <div class="logo">
-  <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/khao%20logo.png" alt="Khao Niao Logo">
-</div>
-
-<div class="dish-images">
-  <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/pad.jpg" alt="Pad Thai">
-  <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/rice.jpg" alt="Arroz Thai">
+  <img src="khao%20logo.png" alt="Khao Niao Logo">
 </div>
 
 <div class="container">
@@ -282,14 +239,12 @@
   </div>
 
   <div class="customer-section">
-    <p>
-      <label>Nombre Completo:</label>
-      <input type="text" id="name"><br>
-      <label>WhatsApp:</label>
-      <input type="text" id="phone"><br>
-      <label>Notas:</label>
-      <input type="text" id="notes">
-    </p>
+    <label>Nombre Completo:</label>
+    <input type="text" id="name"><br>
+    <label>WhatsApp:</label>
+    <input type="text" id="phone"><br>
+    <label>Notas:</label>
+    <input type="text" id="notes">
   </div>
 
   <button onclick="submitOrder()">Enviar Pedido</button>
@@ -298,7 +253,6 @@
 <script>
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbznFNKiUaSmXsiKSdVW4WUKYF9aLynFvvOujl7lj9x0n9e188qK0v47CD7A-KveRYNxkw/exec";
 
-// Auto-fill tomorrow's date
 document.addEventListener("DOMContentLoaded", () => {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
