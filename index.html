@@ -5,11 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Pedido de Comida Tailandesa</title>
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
   
   body { 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -20,12 +16,21 @@
   }
   
   .container {
-    max-width: 450px;
+    max-width: 500px;
     margin: 0 auto;
     background: white;
     border-radius: 20px;
     padding: 30px 25px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  }
+
+  .logo {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .logo img {
+    width: 120px;
+    height: auto;
   }
   
   h1 { 
@@ -33,11 +38,25 @@
     font-size: 28px;
     font-weight: 700;
     text-align: center;
-    margin-bottom: 30px;
-    padding-bottom: 15px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
     border-bottom: 3px solid #e74c3c;
   }
-  
+
+  .dish-images {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .dish-images img {
+    width: 48%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+
   .delivery-section {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     padding: 20px;
@@ -60,6 +79,7 @@
     font-size: 16px;
     background: white;
     margin-bottom: 15px;
+    width: 100%;
     transition: border-color 0.3s ease;
   }
   
@@ -69,9 +89,7 @@
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
   }
   
-  #menu {
-    margin-bottom: 25px;
-  }
+  #menu { margin-bottom: 25px; }
   
   .menu-item { 
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -90,7 +108,6 @@
     font-weight: 600;
     color: #2c3e50;
     flex: 1;
-    min-width: auto;
     margin: 0;
   }
   
@@ -102,7 +119,6 @@
     text-align: center;
     font-size: 16px;
     font-weight: 600;
-    color: #2c3e50;
     background: white;
     margin: 0;
   }
@@ -120,13 +136,8 @@
     margin-bottom: 25px;
   }
   
-  .customer-section p {
-    margin: 0;
-  }
-  
   .customer-section label {
-    display: inline-block;
-    min-width: 200px;
+    display: block;
     font-weight: 600;
     color: #2c3e50;
     margin-bottom: 8px;
@@ -170,40 +181,29 @@
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
   }
-  
+
   @media (max-width: 480px) {
-    body {
-      padding: 10px;
-    }
-    
-    .container {
-      padding: 20px 15px;
-      border-radius: 15px;
-    }
-    
-    .menu-item {
+    .dish-images {
       flex-direction: column;
-      gap: 15px;
-      align-items: stretch;
     }
-    
-    .menu-item input {
+    .dish-images img {
       width: 100%;
-      height: 50px;
-    }
-    
-    .delivery-section label,
-    .customer-section label {
-      min-width: auto;
-      display: block;
-      margin-bottom: 8px;
+      height: 180px;
     }
   }
 </style>
 </head>
 <body>
 <div class="container">
+  <div class="logo">
+    <img src="khao logo.png" alt="Khao Niao Logo">
+  </div>
   <h1>Menú Tailandés</h1>
+
+  <div class="dish-images">
+    <img src="pad.jpg" alt="Pad Thai">
+    <img src="rice.jpg" alt="Arroz Thai">
+  </div>
 
   <div class="delivery-section">
     <label for="deliveryDate">Fecha del Pedido:</label>
@@ -243,14 +243,12 @@
   </div>
 
   <div class="customer-section">
-    <p>
-      <label>Nombre Completo:</label>
-      <input type="text" id="name"><br>
-      <label>WhatsApp:</label>
-      <input type="text" id="phone"><br>
-      <label>Notas:</label>
-      <input type="text" id="notes">
-    </p>
+    <label>Nombre Completo:</label>
+    <input type="text" id="name">
+    <label>WhatsApp:</label>
+    <input type="text" id="phone">
+    <label>Notas:</label>
+    <input type="text" id="notes">
   </div>
 
   <button onclick="submitOrder()">Enviar Pedido</button>
@@ -287,7 +285,6 @@ async function submitOrder() {
     return;
   }
 
-  // Create a flat order string
   const orderNames = items.map(i => i.name).join(', ');
   if (items.length === 1) {
     unitPrice = items[0].price;
@@ -314,7 +311,6 @@ async function submitOrder() {
       body: JSON.stringify(orderData)
     });
     alert("Pedido enviado con éxito. ¡Gracias!");
-    // Reset form
     document.getElementById("deliveryDate").value = "";
     document.getElementById("casa").value = "";
     document.getElementById("deliveryTime").value = "";
