@@ -15,14 +15,45 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     min-height: 100vh;
     background-color: black;
-    background-image: url('https://github.com/khaoniaobistro/Thai-Manu/blob/main/pad.jpg'), url('https://github.com/khaoniaobistro/Thai-Manu/blob/main/rice.jpg');
-    background-position: left center, right center;
-    background-size: 50% 100%, 50% 100%;
-    background-repeat: no-repeat, no-repeat;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Background split with images */
+  .background-left,
+  .background-right {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+  }
+
+  .background-left {
+    left: 0;
+    background-image: url('https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/pad.jpg');
+  }
+
+  .background-right {
+    right: 0;
+    background-image: url('https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/rice.jpg');
+  }
+
+  /* Overlay for better text visibility */
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.25);
+    z-index: 1;
   }
 
   .logo img {
@@ -182,20 +213,16 @@
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
   }
-
-  @media (max-width: 768px) {
-    body {
-      background-size: cover;
-      background-position: center;
-      background-image: url('pad.jpg');
-    }
-  }
 </style>
 </head>
 <body>
 
+<div class="background-left"></div>
+<div class="background-right"></div>
+<div class="overlay"></div>
+
 <div class="logo">
-  <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/khao%20logo.png" alt="Khao Niao Logo">
+  <img src="https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/khao%20logo.png" alt="Khao Niao Logo">
 </div>
 
 <div class="container">
