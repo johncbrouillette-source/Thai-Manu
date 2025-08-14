@@ -11,57 +11,20 @@
     box-sizing: border-box;
   }
 
-  body {
+  body { 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    min-height: 100vh;
     background-color: black;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* Background split with images */
-  .background-left,
-  .background-right {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 50%;
-    background-size: cover;
-    background-position: center;
-    z-index: 0;
-  }
-
-  .background-left {
-    left: 0;
-    background-image: url('https://github.com/khaoniaobistro/Thai-Manu/blob/main/pad.jpg');
-  }
-
-  .background-right {
-    right: 0;
-    background-image: url('https://github.com/khaoniaobistro/Thai-Manu/blob/main/rice.jpg');
-  }
-
-  /* Overlay for better text visibility */
-  .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.25);
-    z-index: 1;
   }
 
   .logo img {
     display: block;
     max-width: 120px;
-    margin: 0 auto 20px;
-    z-index: 2;
-    position: relative;
+    margin: 20px auto;
   }
 
   .container {
@@ -71,8 +34,6 @@
     border-radius: 20px;
     padding: 30px 25px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    z-index: 2;
-    position: relative;
   }
 
   h1 { 
@@ -107,6 +68,7 @@
     font-size: 16px;
     background: white;
     margin-bottom: 15px;
+    width: 100%;
     transition: border-color 0.3s ease;
   }
 
@@ -137,7 +99,6 @@
     font-weight: 600;
     color: #2c3e50;
     flex: 1;
-    min-width: auto;
     margin: 0;
   }
 
@@ -213,78 +174,84 @@
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
   }
+
+  @media (max-width: 480px) {
+    .container {
+      padding: 20px 15px;
+    }
+    
+    .menu-item {
+      flex-direction: column;
+      gap: 15px;
+      align-items: stretch;
+    }
+    
+    .menu-item input {
+      width: 100%;
+      height: 50px;
+    }
+  }
 </style>
 </head>
 <body>
-
-<div class="background-left"></div>
-<div class="background-right"></div>
-<div class="overlay"></div>
-
-<div class="logo">
-  <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/khao%20logo.png" alt="Khao Niao Logo">
-</div>
-
-<div class="container">
-  <h1>Menú Tailandés</h1>
-
-  <div class="delivery-section">
-    <label for="deliveryDate">Fecha del Pedido:</label>
-    <input type="date" id="deliveryDate"><br><br>
-
-    <label for="casa">Casa #:</label>
-    <input type="text" id="casa"><br><br>
-
-    <label for="deliveryTime">Hora de Entrega:</label>
-    <select id="deliveryTime">
-      <option value="">--Seleccionar--</option>
-      <option>11:00</option>
-      <option>11:30</option>
-      <option>12:00</option>
-      <option>12:30</option>
-      <option>13:00</option>
-    </select>
+  <div class="logo">
+    <img src="https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/khao%20logo.png" alt="Khao Logo">
   </div>
 
-  <div id="menu">
-    <div class="menu-item">
-      <label>Pad Thai - $20.000 COP</label>
-      <input type="number" min="0" value="0" data-name="Pad Thai" data-price="20000">
-    </div>
-    <div class="menu-item">
-      <label>Arroz Thai - $19.000 COP</label>
-      <input type="number" min="0" value="0" data-name="Arroz Thai" data-price="19000">
-    </div>
-    <div class="menu-item">
-      <label>Combo Pad Thai - $26.000 COP</label>
-      <input type="number" min="0" value="0" data-name="Combo Pad Thai" data-price="26000">
-    </div>
-    <div class="menu-item">
-      <label>Combo Arroz Thai - $25.000 COP</label>
-      <input type="number" min="0" value="0" data-name="Combo Arroz Thai" data-price="25000">
-    </div>
-  </div>
+  <div class="container">
+    <h1>Menú Tailandés</h1>
 
-  <div class="customer-section">
-    <label>Nombre Completo:</label>
-    <input type="text" id="name"><br>
-    <label>WhatsApp:</label>
-    <input type="text" id="phone"><br>
-    <label>Notas:</label>
-    <input type="text" id="notes">
-  </div>
+    <div class="delivery-section">
+      <label for="deliveryDate">Fecha del Pedido:</label>
+      <input type="date" id="deliveryDate">
 
-  <button onclick="submitOrder()">Enviar Pedido</button>
-</div>
+      <label for="casa">Casa #:</label>
+      <input type="text" id="casa">
+
+      <label for="deliveryTime">Hora de Entrega:</label>
+      <select id="deliveryTime">
+        <option value="">--Seleccionar--</option>
+        <option>11:00</option>
+        <option>11:30</option>
+        <option>12:00</option>
+        <option>12:30</option>
+        <option>13:00</option>
+      </select>
+    </div>
+
+    <div id="menu">
+      <div class="menu-item">
+        <label>Pad Thai - $20.000 COP</label>
+        <input type="number" min="0" value="0" data-name="Pad Thai" data-price="20000">
+      </div>
+      <div class="menu-item">
+        <label>Arroz Thai - $19.000 COP</label>
+        <input type="number" min="0" value="0" data-name="Arroz Thai" data-price="19000">
+      </div>
+      <div class="menu-item">
+        <label>Combo Pad Thai - $26.000 COP</label>
+        <input type="number" min="0" value="0" data-name="Combo Pad Thai" data-price="26000">
+      </div>
+      <div class="menu-item">
+        <label>Combo Arroz Thai - $25.000 COP</label>
+        <input type="number" min="0" value="0" data-name="Combo Arroz Thai" data-price="25000">
+      </div>
+    </div>
+
+    <div class="customer-section">
+      <label>Nombre Completo:</label>
+      <input type="text" id="name">
+      <label>WhatsApp:</label>
+      <input type="text" id="phone">
+      <label>Notas:</label>
+      <input type="text" id="notes">
+    </div>
+
+    <button onclick="submitOrder()">Enviar Pedido</button>
+  </div>
 
 <script>
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbznFNKiUaSmXsiKSdVW4WUKYF9aLynFvvOujl7lj9x0n9e188qK0v47CD7A-KveRYNxkw/exec";
-
-document.addEventListener("DOMContentLoaded", () => {
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  document.getElementById("deliveryDate").value = tomorrow.toISOString().split("T")[0];
-});
 
 async function submitOrder() {
   const deliveryDate = document.getElementById("deliveryDate").value;
