@@ -95,7 +95,7 @@
 <body>
 
 <div class="container">
-  <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/khao%20logo.png" alt="Logo" class="logo">
+  <img src="https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/khao%20logo.png" alt="Logo" class="logo">
   <h1>Menú Tailandés</h1>
 
   <div class="delivery-section">
@@ -121,22 +121,22 @@
 
   <div id="menu">
     <div class="menu-item">
-      <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/padthai.jpeg" alt="Pad Thai">
+      <img src="https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/padthai.jpeg" alt="Pad Thai">
       <label>Pad Thai - $20.000 COP</label>
       <input type="number" min="0" value="0" data-name="Pad Thai" data-price="20000">
     </div>
     <div class="menu-item">
-      <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/rice.jpeg" alt="Arroz Thai">
+      <img src="https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/rice.jpeg" alt="Arroz Thai">
       <label>Arroz Thai - $19.000 COP</label>
       <input type="number" min="0" value="0" data-name="Arroz Thai" data-price="19000">
     </div>
     <div class="menu-item">
-      <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/padcombo.png" alt="Combo Pad Thai">
+      <img src="https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/padcombo.png" alt="Combo Pad Thai">
       <label>Combo Pad Thai - $26.000 COP</label>
       <input type="number" min="0" value="0" data-name="Combo Pad Thai" data-price="26000">
     </div>
     <div class="menu-item">
-      <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/ricecombo.png" alt="Combo Arroz Thai">
+      <img src="https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/ricecombo.png" alt="Combo Arroz Thai">
       <label>Combo Arroz Thai - $25.000 COP</label>
       <input type="number" min="0" value="0" data-name="Combo Arroz Thai" data-price="25000">
     </div>
@@ -163,7 +163,6 @@ function setDeliveryDate() {
   const options = { timeZone: "America/Bogota" };
   const colombiaTime = new Date(now.toLocaleString("en-US", options));
 
-  let deliveryDate;
   const hours = colombiaTime.getHours();
   const minutes = colombiaTime.getMinutes();
   const alertEl = document.getElementById("nextDayAlert");
@@ -175,7 +174,7 @@ function setDeliveryDate() {
     alertEl.style.display = "none";
   }
 
-  deliveryDate = colombiaTime.toISOString().split("T")[0];
+  const deliveryDate = colombiaTime.toISOString().split("T")[0];
   document.getElementById("deliveryDate").value = deliveryDate;
 }
 
@@ -192,17 +191,24 @@ async function submitOrder() {
   const items = [];
   let totalQty = 0;
   let subtotal = 0;
+  let pricePerUnit = '';
 
   document.querySelectorAll("#menu input[type='number']").forEach(input => {
     const qty = parseInt(input.value, 10);
     if (qty > 0) {
       const price = parseFloat(input.dataset.price);
-      const name = input.dataset.name;
-      items.push({ name, price, quantity: qty });
+      const itemName = input.dataset.name;
+      items.push({ name: itemName, price, quantity: qty });
       totalQty += qty;
       subtotal += price * qty;
     }
   });
+
+  if (items.length === 1) {
+    pricePerUnit = items[0].price;
+  } else if (items.length > 1) {
+    pricePerUnit = items.map(i => `${i.name}:${i.price}`).join(', ');
+  }
 
   if (!deliveryDate || !name || !phone || items.length === 0) {
     alert("Por favor complete la fecha, nombre, número de WhatsApp y seleccione al menos un producto.");
@@ -216,9 +222,10 @@ async function submitOrder() {
     name,
     phone,
     notes,
-    items, // send the full array so Apps Script can process column H
+    items,
     order: items.map(i => i.name).join(', '),
     quantity: totalQty,
+    pricePerUnit: pricePerUnit,
     subtotal: subtotal
   };
 
@@ -231,7 +238,7 @@ async function submitOrder() {
     });
     alert("Pedido enviado con éxito. ¡Gracias!");
     document.querySelectorAll("input, select").forEach(el => el.value = "");
-    setDeliveryDate(); // reset to correct default
+    setDeliveryDate(); // reset date
   } catch (error) {
     alert("Hubo un error al enviar el pedido. Inténtelo de nuevo.");
   }
