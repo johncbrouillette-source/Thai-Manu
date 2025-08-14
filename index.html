@@ -71,6 +71,14 @@
     text-align: center;
     font-weight: bold;
   }
+  .note {
+    color: #ff6b6b;
+    font-style: italic;
+    font-size: 0.9rem;
+    margin-top: -4px;
+    margin-bottom: 10px;
+    display: none; /* hidden by default */
+  }
   button {
     width: 100%;
     padding: 12px;
@@ -95,6 +103,7 @@
   <div class="delivery-section">
     <label for="deliveryDate">Fecha del Pedido:</label>
     <input type="date" id="deliveryDate">
+    <div id="nextDayNote" class="note">📅 Este pedido será entregado mañana — o seleccione otra fecha.</div>
 
     <label for="casa">Casa #:</label>
     <input type="text" id="casa">
@@ -148,6 +157,53 @@
 <script>
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbznFNKiUaSmXsiKSdVW4WUKYF9aLynFvvOujl7lj9x0n9e188qK0v47CD7A-KveRYNxkw/exec";
 
+/* ===== Helper: format YYYY-MM-DD ===== */
+function formatYMD(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+/* ===== Get current time in Colombia ===== */
+function getBogotaNow() {
+  // Create a Date reflecting America/Bogota local time
+  const str = new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' });
+  return new Date(str);
+}
+
+/* ===== Initialize date with cutoff logic and toggle note ===== */
+(function initDatePicker() {
+  const dateInput = document.getElementById("deliveryDate");
+  const note = document.getElementById("nextDayNote");
+
+  const nowCO = getBogotaNow();
+  const hours = nowCO.getHours();
+  const minutes = nowCO.getMinutes();
+
+  // Determine default date:
+  // Before 12:30 PM -> today
+  // 12:31 PM or later -> tomorrow
+  let defaultDate = new Date(nowCO);
+  const afterCutoff = (hours > 12) || (hours === 12 && minutes >= 31);
+  if (afterCutoff) {
+    defaultDate.setDate(defaultDate.getDate() + 1);
+  }
+
+  dateInput.value = formatYMD(defaultDate);
+  note.style.display = afterCutoff ? 'block' : 'none';
+
+  // If user changes date, hide note unless it's still set to "tomorrow" during after-cutoff
+  dateInput.addEventListener('change', () => {
+    const selected = dateInput.value;
+    const tomorrow = new Date(nowCO);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const isTomorrowSelected = selected === formatYMD(tomorrow);
+    note.style.display = (afterCutoff && isTomorrowSelected) ? 'block' : 'none';
+  });
+})();
+
+/* ===== Submit order ===== */
 async function submitOrder() {
   const deliveryDate = document.getElementById("deliveryDate").value;
   const casa = document.getElementById("casa").value;
