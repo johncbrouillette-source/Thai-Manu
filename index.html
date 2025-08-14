@@ -80,8 +80,13 @@
     font-size: 16px;
     border-radius: 8px;
     cursor: pointer;
+    position: relative;
   }
-  button:hover {
+  button:disabled {
+    background: #555;
+    cursor: not-allowed;
+  }
+  button:hover:enabled {
     background: #218838;
   }
   .next-day-alert {
@@ -90,59 +95,44 @@
     margin-top: -5px;
     margin-bottom: 10px;
   }
-  /* Order Summary Modal */
+  /* Elephant spinner */
+  .elephant-spinner {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    animation: spin 1s linear infinite;
+    vertical-align: middle;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  /* Order summary modal */
   .modal {
     display: none;
     position: fixed;
-    z-index: 1000;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    overflow: auto;
-    background: rgba(0,0,0,0.8);
-    padding-top: 60px;
+    z-index: 999;
+    left: 0; top: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
   }
   .modal-content {
     background: #1a1a1a;
-    margin: auto;
     padding: 20px;
     border-radius: 8px;
     max-width: 400px;
-    color: white;
+    width: 90%;
   }
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 24px;
-    cursor: pointer;
+  .modal-content h2 {
+    margin-top: 0;
+    color: #e74c3c;
   }
-  .close:hover { color: white; }
-  .total-line {
-    font-weight: bold;
-    margin-top: 10px;
+  .modal-content ul {
+    padding-left: 20px;
   }
-  /* Loading Overlay */
-  #loadingOverlay {
-    display: none;
-    position: fixed;
-    z-index: 2000;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: white;
-  }
-  #loadingOverlay img {
-    width: 80px;
-    height: 80px;
-    animation: spin 2s linear infinite;
-    margin-bottom: 15px;
-  }
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+  .modal-content button {
+    margin-top: 15px;
   }
 </style>
 </head>
@@ -205,35 +195,29 @@
     <input type="text" id="notes">
   </div>
 
-  <button onclick="showSummary()">Enviar Pedido</button>
+  <button id="openSummary">Enviar Pedido</button>
 </div>
 
 <!-- Order Summary Modal -->
-<div id="summaryModal" class="modal">
+<div id="orderSummaryModal" class="modal">
   <div class="modal-content">
-    <span class="close" onclick="closeSummary()">&times;</span>
-    <h2>Resumen de Pedido</h2>
-    <div id="summaryDetails"></div>
-    <div class="total-line" id="summaryTotal"></div>
-    <button id="confirmOrderBtn" onclick="confirmOrder()">Confirmar Pedido</button>
+    <h2>Resumen del Pedido</h2>
+    <ul id="orderSummaryList"></ul>
+    <p><strong>Total:</strong> $<span id="orderSummaryTotal"></span> COP</p>
+    <button id="confirmOrderBtn">Confirmar Pedido</button>
+    <button onclick="closeSummary()">Cancelar</button>
   </div>
-</div>
-
-<!-- Loading Overlay -->
-<div id="loadingOverlay">
-  <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/loading.png?raw=true" alt="Cargando...">
-  <div>Procesando pedido...</div>
 </div>
 
 <script>
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyDcQIS3wpF-5aCSOns7ufnn4bWVlqv8dlpB5AUCv_oFNvUZwqCnXoBmNLEbk-nCmEMoA/exec";
 
-// Auto-set delivery date based on Colombian time
 function setDeliveryDate() {
   const now = new Date();
   const options = { timeZone: "America/Bogota" };
   const colombiaTime = new Date(now.toLocaleString("en-US", options));
 
+  let deliveryDate;
   const hours = colombiaTime.getHours();
   const minutes = colombiaTime.getMinutes();
   const alertEl = document.getElementById("nextDayAlert");
@@ -245,42 +229,47 @@ function setDeliveryDate() {
     alertEl.style.display = "none";
   }
 
-  document.getElementById("deliveryDate").value = colombiaTime.toISOString().split("T")[0];
+  deliveryDate = colombiaTime.toISOString().split("T")[0];
+  document.getElementById("deliveryDate").value = deliveryDate;
 }
 setDeliveryDate();
 
-function showSummary() {
+document.getElementById("openSummary").addEventListener("click", () => {
   const items = [];
   let total = 0;
-
   document.querySelectorAll("#menu input[type='number']").forEach(input => {
     const qty = parseInt(input.value, 10);
     if (qty > 0) {
-      const price = parseFloat(input.dataset.price);
-      items.push({ name: input.dataset.name, quantity: qty, price });
-      total += price * qty;
+      items.push({ name: input.dataset.name, qty, price: parseFloat(input.dataset.price) });
+      total += qty * parseFloat(input.dataset.price);
     }
   });
 
-  if (items.length === 0 || !document.getElementById("name").value || !document.getElementById("phone").value) {
-    alert("Por favor complete nombre, WhatsApp y seleccione al menos un producto.");
+  if (items.length === 0) {
+    alert("Seleccione al menos un producto.");
     return;
   }
 
-  const detailsEl = document.getElementById("summaryDetails");
-  detailsEl.innerHTML = items.map(i => `${i.quantity} x ${i.name} - $${i.price.toLocaleString()} COP`).join("<br>");
-  document.getElementById("summaryTotal").innerText = `Total: $${total.toLocaleString()} COP`;
+  const list = document.getElementById("orderSummaryList");
+  list.innerHTML = "";
+  items.forEach(i => {
+    const li = document.createElement("li");
+    li.textContent = `${i.qty} x ${i.name} - $${(i.qty * i.price).toLocaleString()} COP`;
+    list.appendChild(li);
+  });
 
-  document.getElementById("summaryModal").style.display = "block";
-}
+  document.getElementById("orderSummaryTotal").textContent = total.toLocaleString();
+  document.getElementById("orderSummaryModal").style.display = "flex";
+});
 
 function closeSummary() {
-  document.getElementById("summaryModal").style.display = "none";
+  document.getElementById("orderSummaryModal").style.display = "none";
 }
 
-async function confirmOrder() {
-  document.getElementById("summaryModal").style.display = "none";
-  document.getElementById("loadingOverlay").style.display = "flex";
+document.getElementById("confirmOrderBtn").addEventListener("click", async function() {
+  const btn = this;
+  btn.disabled = true;
+  btn.innerHTML = `<img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/loading.png?raw=true" class="elephant-spinner"> Procesando pedido...`;
 
   const deliveryDate = document.getElementById("deliveryDate").value;
   const casa = document.getElementById("casa").value;
@@ -297,7 +286,8 @@ async function confirmOrder() {
     const qty = parseInt(input.value, 10);
     if (qty > 0) {
       const price = parseFloat(input.dataset.price);
-      items.push({ name: input.dataset.name, price, quantity: qty });
+      const itemName = input.dataset.name;
+      items.push({ name: itemName, price, quantity: qty });
       totalQty += qty;
       subtotal += price * qty;
     }
@@ -323,18 +313,17 @@ async function confirmOrder() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(orderData)
     });
-
-    setTimeout(() => {
-      document.getElementById("loadingOverlay").style.display = "none";
-      alert("Pedido enviado con éxito. ¡Gracias!");
-      document.querySelectorAll("input, select").forEach(el => el.value = "");
-      setDeliveryDate();
-    }, 1500);
+    alert("Pedido enviado con éxito. ¡Gracias!");
+    document.querySelectorAll("input, select").forEach(el => el.value = "");
+    setDeliveryDate();
+    closeSummary();
   } catch (error) {
-    document.getElementById("loadingOverlay").style.display = "none";
     alert("Hubo un error al enviar el pedido. Inténtelo de nuevo.");
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = "Confirmar Pedido";
   }
-}
+});
 </script>
 </body>
 </html>
