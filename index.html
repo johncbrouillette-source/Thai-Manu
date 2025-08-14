@@ -4,6 +4,10 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Pedido de Comida Tailandesa</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+
 <style>
   body { 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -27,7 +31,8 @@
   h1 {
     text-align: center;
     margin-bottom: 20px;
-    color: #e74c3c;
+    color: #FFD700;
+    font-family: 'Open Sans', sans-serif;
   }
   .delivery-section, .customer-section {
     margin-bottom: 20px;
@@ -90,83 +95,18 @@
     margin-top: -5px;
     margin-bottom: 10px;
   }
-  .total-display {
-    font-size: 18px;
-    font-weight: bold;
-    text-align: right;
-    margin: 10px 0;
-  }
-  /* Modal */
-  .modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8);
-    align-items: center;
-    justify-content: center;
-  }
-  .modal-content {
-    background: #1a1a1a;
-    padding: 20px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 400px;
-  }
-  .modal-buttons {
-    display: flex;
-    justify-content: space-between;
+  .version {
+    text-align: center;
+    font-size: 12px;
+    color: #888;
     margin-top: 15px;
-  }
-  .btn-edit {
-    background: grey;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  .btn-confirm {
-    background: #28a745;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  /* Fullscreen loader */
-  .loader-overlay {
-    display: none;
-    position: fixed;
-    z-index: 2000;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.9);
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  .loader-overlay img {
-    width: 80px;
-    height: 80px;
-    animation: spin 2s linear infinite;
-  }
-  .loader-overlay p {
-    margin-top: 15px;
-    font-size: 18px;
-    color: white;
-  }
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
   }
 </style>
 </head>
 <body>
 
 <div class="container">
-  <img src="https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/khao%20logo.png" alt="Logo" class="logo">
+  <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/khao%20logo.png?raw=true" alt="Logo" class="logo">
   <h1>Menú Tailandés</h1>
 
   <div class="delivery-section">
@@ -192,28 +132,26 @@
 
   <div id="menu">
     <div class="menu-item">
-      <img src="https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/padthai.jpeg" alt="Pad Thai">
+      <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/padthai.jpeg?raw=true" alt="Pad Thai">
       <label>Pad Thai - $20.000 COP</label>
       <input type="number" min="0" value="0" data-name="Pad Thai" data-price="20000">
     </div>
     <div class="menu-item">
-      <img src="https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/rice.jpeg" alt="Arroz Thai">
+      <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/rice.jpeg?raw=true" alt="Arroz Thai">
       <label>Arroz Thai - $19.000 COP</label>
       <input type="number" min="0" value="0" data-name="Arroz Thai" data-price="19000">
     </div>
     <div class="menu-item">
-      <img src="https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/padcombo.png" alt="Combo Pad Thai">
+      <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/padcombo.png?raw=true" alt="Combo Pad Thai">
       <label>Combo Pad Thai - $26.000 COP</label>
       <input type="number" min="0" value="0" data-name="Combo Pad Thai" data-price="26000">
     </div>
     <div class="menu-item">
-      <img src="https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/ricecombo.png" alt="Combo Arroz Thai">
+      <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/ricecombo.png?raw=true" alt="Combo Arroz Thai">
       <label>Combo Arroz Thai - $25.000 COP</label>
       <input type="number" min="0" value="0" data-name="Combo Arroz Thai" data-price="25000">
     </div>
   </div>
-
-  <div class="total-display" id="totalDisplay">Total: $0 COP</div>
 
   <div class="customer-section">
     <label>Nombre Completo:</label>
@@ -224,29 +162,12 @@
     <input type="text" id="notes">
   </div>
 
-  <button onclick="showOrderSummary()">Enviar Pedido</button>
-</div>
-
-<!-- Order Summary Modal -->
-<div id="orderSummaryModal" class="modal">
-  <div class="modal-content">
-    <h3>Resumen del Pedido</h3>
-    <div id="orderSummaryContent"></div>
-    <div class="modal-buttons">
-      <button class="btn-edit" onclick="closeSummary()">Editar</button>
-      <button class="btn-confirm" id="confirmOrderBtn" onclick="confirmOrder()">Confirmar Pedido</button>
-    </div>
-  </div>
-</div>
-
-<!-- Loader Overlay -->
-<div id="loaderOverlay" class="loader-overlay">
-  <img src="https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/loading.png" alt="Loading">
-  <p>Procesando pedido...</p>
+  <button onclick="submitOrder()">Enviar Pedido</button>
+  <div class="version">v1.0</div>
 </div>
 
 <script>
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzW66liojUGFWdDoQeqcwX4hElB2PbdFP2uG6WPSTsKlzcCvIfKW5nBiOneV4YETNsiJA/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyDcQIS3wpF-5aCSOns7ufnn4bWVlqv8dlpB5AUCv_oFNvUZwqCnXoBmNLEbk-nCmEMoA/exec";
 
 // Auto-set delivery date based on Colombian time
 function setDeliveryDate() {
@@ -254,7 +175,6 @@ function setDeliveryDate() {
   const options = { timeZone: "America/Bogota" };
   const colombiaTime = new Date(now.toLocaleString("en-US", options));
 
-  let deliveryDate;
   const hours = colombiaTime.getHours();
   const minutes = colombiaTime.getMinutes();
   const alertEl = document.getElementById("nextDayAlert");
@@ -266,71 +186,12 @@ function setDeliveryDate() {
     alertEl.style.display = "none";
   }
 
-  deliveryDate = colombiaTime.toISOString().split("T")[0];
-  document.getElementById("deliveryDate").value = deliveryDate;
+  document.getElementById("deliveryDate").value = colombiaTime.toISOString().split("T")[0];
 }
+
 setDeliveryDate();
 
-// Update total
-function updateTotal() {
-  let total = 0;
-  document.querySelectorAll("#menu input[type='number']").forEach(input => {
-    const qty = parseInt(input.value, 10);
-    if (qty > 0) {
-      const price = parseFloat(input.dataset.price);
-      total += price * qty;
-    }
-  });
-  document.getElementById("totalDisplay").textContent = "Total: $" + total.toLocaleString() + " COP";
-}
-document.querySelectorAll("#menu input[type='number']").forEach(input => {
-  input.addEventListener("input", updateTotal);
-});
-
-// Show order summary
-function showOrderSummary() {
-  const items = [];
-  let subtotal = 0;
-  document.querySelectorAll("#menu input[type='number']").forEach(input => {
-    const qty = parseInt(input.value, 10);
-    if (qty > 0) {
-      const price = parseFloat(input.dataset.price);
-      const name = input.dataset.name;
-      items.push({ name, price, quantity: qty });
-      subtotal += price * qty;
-    }
-  });
-
-  if (!document.getElementById("deliveryDate").value ||
-      !document.getElementById("name").value ||
-      !document.getElementById("phone").value ||
-      items.length === 0) {
-    alert("Por favor complete la fecha, nombre, número de WhatsApp y seleccione al menos un producto.");
-    return;
-  }
-
-  let summaryHTML = "<ul>";
-  items.forEach(i => {
-    summaryHTML += `<li>${i.quantity} x ${i.name} - $${i.price.toLocaleString()} COP</li>`;
-  });
-  summaryHTML += `</ul><strong>Total: $${subtotal.toLocaleString()} COP</strong>`;
-
-  document.getElementById("orderSummaryContent").innerHTML = summaryHTML;
-  document.getElementById("orderSummaryModal").style.display = "flex";
-}
-
-// Close summary
-function closeSummary() {
-  document.getElementById("orderSummaryModal").style.display = "none";
-}
-
-// Confirm order
-async function confirmOrder() {
-  const confirmBtn = document.getElementById("confirmOrderBtn");
-  confirmBtn.disabled = true;
-  document.getElementById("loaderOverlay").style.display = "flex";
-  document.getElementById("orderSummaryModal").style.display = "none";
-
+async function submitOrder() {
   const deliveryDate = document.getElementById("deliveryDate").value;
   const casa = document.getElementById("casa").value;
   const deliveryTime = document.getElementById("deliveryTime").value;
@@ -341,6 +202,7 @@ async function confirmOrder() {
   const items = [];
   let totalQty = 0;
   let subtotal = 0;
+
   document.querySelectorAll("#menu input[type='number']").forEach(input => {
     const qty = parseInt(input.value, 10);
     if (qty > 0) {
@@ -351,6 +213,11 @@ async function confirmOrder() {
       subtotal += price * qty;
     }
   });
+
+  if (!deliveryDate || !name || !phone || items.length === 0) {
+    alert("Por favor complete la fecha, nombre, número de WhatsApp y seleccione al menos un producto.");
+    return;
+  }
 
   const orderData = {
     deliveryDate,
@@ -372,18 +239,11 @@ async function confirmOrder() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(orderData)
     });
-    setTimeout(() => {
-      document.getElementById("loaderOverlay").style.display = "none";
-      alert("Pedido enviado con éxito. ¡Gracias!");
-      document.querySelectorAll("input, select").forEach(el => el.value = "");
-      setDeliveryDate();
-      updateTotal();
-      confirmBtn.disabled = false;
-    }, 2000);
+    alert("Pedido enviado con éxito. ¡Gracias!");
+    document.querySelectorAll("input, select").forEach(el => el.value = "");
+    setDeliveryDate();
   } catch (error) {
-    document.getElementById("loaderOverlay").style.display = "none";
     alert("Hubo un error al enviar el pedido. Inténtelo de nuevo.");
-    confirmBtn.disabled = false;
   }
 }
 </script>
