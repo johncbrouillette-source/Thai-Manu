@@ -5,67 +5,50 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Pedido de Comida Tailandesa</title>
 <style>
-  :root{
-    --bg:#000;
-    --card:#1a1a1a;
-    --muted:#2a2a2a;
-    --accent:#e74c3c;
-    --ok:#28a745;
-    --ok-hover:#218838;
-    --warn:#ffcc00;
-  }
   body { 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: var(--bg);
+    background: black;
     color: white;
     margin: 0;
     padding: 20px;
   }
   .container {
-    max-width: 520px;
+    max-width: 500px;
     margin: 0 auto;
-    background: var(--card);
+    background: #1a1a1a;
     padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,.4);
   }
   .logo {
     display: block;
-    margin: 0 auto 16px;
+    margin: 0 auto 20px;
     max-width: 150px;
-    height: auto;
   }
   h1 {
     text-align: center;
-    margin: 0 0 18px;
-    color: var(--accent);
-    font-size: 22px;
+    margin-bottom: 20px;
+    color: #e74c3c;
   }
   .delivery-section, .customer-section {
-    margin-bottom: 18px;
+    margin-bottom: 20px;
   }
   label {
     display: block;
-    margin: 10px 0 6px;
-    font-weight: 700;
-    font-size: 14px;
+    margin: 8px 0 4px;
+    font-weight: bold;
   }
   input, select {
     width: 100%;
-    padding: 10px 12px;
+    padding: 8px;
     border-radius: 6px;
     border: none;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     font-size: 14px;
-    background: #121212;
-    color: #fff;
-    outline: 1px solid #333;
   }
-  input:focus, select:focus { outline: 2px solid #555; }
   .menu-item {
     display: flex;
     align-items: center;
-    background: var(--muted);
+    background: #2a2a2a;
     padding: 10px;
     border-radius: 8px;
     margin-bottom: 12px;
@@ -81,121 +64,103 @@
     flex: 1;
     color: white;
     margin: 0;
-    font-weight: 600;
   }
   .menu-item input[type="number"] {
-    width: 70px;
-    padding: 8px;
+    width: 60px;
+    padding: 6px;
     text-align: center;
     font-weight: bold;
-    background:#111;
-    color:#fff;
-    outline:1px solid #333;
-    border-radius:6px;
   }
-  .totals {
-    margin: 10px 0 16px;
-    padding: 10px 12px;
-    background:#111;
-    border:1px solid #333;
-    border-radius:8px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    font-weight:700;
-  }
-  .next-day-alert {
-    color: var(--warn);
-    font-size: 13px;
-    margin-top: -2px;
-    margin-bottom: 8px;
-  }
-  .btn {
+  button {
     width: 100%;
     padding: 12px;
-    background: var(--ok);
+    background: #28a745;
     border: none;
     color: white;
     font-size: 16px;
     border-radius: 8px;
     cursor: pointer;
-    font-weight:700;
   }
-  .btn:hover { background: var(--ok-hover); }
-
-  /* Modal */
-  .modal-backdrop{
-    position:fixed; inset:0;
-    background: rgba(0,0,0,.6);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:16px;
-    z-index: 9999;
+  button:hover {
+    background: #218838;
   }
-  .modal{
-    width: 100%;
-    max-width: 520px;
-    background: #121212;
-    color:#fff;
-    border-radius:12px;
-    box-shadow: 0 20px 60px rgba(0,0,0,.6);
-    overflow:hidden;
+  .next-day-alert {
+    color: #ffcc00;
+    font-size: 13px;
+    margin-top: -5px;
+    margin-bottom: 10px;
   }
-  .modal-header{
-    padding:14px 16px;
-    background:#181818;
-    border-bottom:1px solid #2a2a2a;
-    display:flex; justify-content:space-between; align-items:center;
+  /* Order Summary Modal */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    overflow: auto;
+    background: rgba(0,0,0,0.8);
+    padding-top: 60px;
   }
-  .modal-title{ font-weight:800; color:#fff; }
-  .modal-body{
-    padding:16px;
-    max-height: 70vh;
-    overflow:auto;
+  .modal-content {
+    background: #1a1a1a;
+    margin: auto;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 400px;
+    color: white;
   }
-  .order-list{ list-style:none; padding:0; margin:0 0 12px; }
-  .order-line{
-    display:flex; justify-content:space-between; align-items:center;
-    padding:8px 10px; border-bottom:1px dashed #2a2a2a; font-size:14px;
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
   }
-  .modal-footer{
-    display:flex; gap:8px; padding:14px 16px; background:#181818; border-top:1px solid #2a2a2a;
+  .close:hover { color: white; }
+  .total-line {
+    font-weight: bold;
+    margin-top: 10px;
   }
-  .btn-ghost{
-    flex:1;
-    background:#2a2a2a; color:#fff; border:none; border-radius:8px; padding:12px; cursor:pointer; font-weight:700;
+  /* Loading Overlay */
+  #loadingOverlay {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
   }
-  .btn-primary{
-    flex:1;
-    background: var(--ok); color:#fff; border:none; border-radius:8px; padding:12px; cursor:pointer; font-weight:700;
+  #loadingOverlay img {
+    width: 80px;
+    height: 80px;
+    animation: spin 2s linear infinite;
+    margin-bottom: 15px;
   }
-  .btn-primary[disabled]{ opacity:.7; cursor:not-allowed; }
-  .spinner{
-    display:inline-block; width:16px; height:16px; border:2px solid rgba(255,255,255,.35);
-    border-top-color:#fff; border-radius:50%; animation:spin 1s linear infinite; vertical-align:-3px; margin-right:8px;
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
-  @keyframes spin{ to{ transform: rotate(360deg); } }
-
-  /* Help text under phone, small */
-  .hint { font-size:12px; color:#aaa; margin-top:-6px; margin-bottom:8px; }
 </style>
 </head>
 <body>
 
 <div class="container">
-  <img src="https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/khao%20logo.png" alt="Logo" class="logo">
+  <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/khao%20logo.png?raw=true" alt="Logo" class="logo">
   <h1>Menú Tailandés</h1>
 
   <div class="delivery-section">
     <label for="deliveryDate">Fecha del Pedido:</label>
-    <input type="date" id="deliveryDate" aria-describedby="nextDayAlert">
+    <input type="date" id="deliveryDate">
     <div id="nextDayAlert" class="next-day-alert" style="display:none;">
       📅 Este pedido será entregado mañana - o seleccione otra fecha.
     </div>
 
     <label for="casa">Casa #:</label>
-    <input type="text" id="casa" inputmode="numeric" placeholder="Ej: 23">
+    <input type="text" id="casa">
 
     <label for="deliveryTime">Hora de Entrega:</label>
     <select id="deliveryTime">
@@ -210,183 +175,133 @@
 
   <div id="menu">
     <div class="menu-item">
-      <img src="https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/padthai.jpeg" alt="Pad Thai">
+      <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/padthai.jpeg?raw=true" alt="Pad Thai">
       <label>Pad Thai - $20.000 COP</label>
       <input type="number" min="0" value="0" data-name="Pad Thai" data-price="20000">
     </div>
     <div class="menu-item">
-      <img src="https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/rice.jpeg" alt="Arroz Thai">
+      <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/rice.jpeg?raw=true" alt="Arroz Thai">
       <label>Arroz Thai - $19.000 COP</label>
       <input type="number" min="0" value="0" data-name="Arroz Thai" data-price="19000">
     </div>
     <div class="menu-item">
-      <img src="https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/padcombo.png" alt="Combo Pad Thai">
+      <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/padcombo.png?raw=true" alt="Combo Pad Thai">
       <label>Combo Pad Thai - $26.000 COP</label>
       <input type="number" min="0" value="0" data-name="Combo Pad Thai" data-price="26000">
     </div>
     <div class="menu-item">
-      <img src="https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/ricecombo.png" alt="Combo Arroz Thai">
+      <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/ricecombo.png?raw=true" alt="Combo Arroz Thai">
       <label>Combo Arroz Thai - $25.000 COP</label>
       <input type="number" min="0" value="0" data-name="Combo Arroz Thai" data-price="25000">
     </div>
   </div>
 
-  <div class="totals">
-    <span>Total estimado</span>
-    <strong id="runningTotal">COP $0</strong>
-  </div>
-
   <div class="customer-section">
     <label>Nombre Completo:</label>
-    <input type="text" id="name" placeholder="Nombre y apellido">
+    <input type="text" id="name">
     <label>WhatsApp:</label>
-    <input type="text" id="phone" placeholder="+57 300 000 0000">
-    <div class="hint">Usaremos este número para confirmar tu pedido por WhatsApp.</div>
+    <input type="text" id="phone">
     <label>Notas:</label>
-    <input type="text" id="notes" placeholder="Sin cilantro, extra picante, etc.">
+    <input type="text" id="notes">
   </div>
 
-  <button class="btn" id="openSummaryBtn">Enviar Pedido</button>
+  <button onclick="showSummary()">Enviar Pedido</button>
 </div>
 
-<!-- Summary Modal -->
-<div class="modal-backdrop" id="summaryBackdrop" aria-hidden="true">
-  <div class="modal" role="dialog" aria-labelledby="summaryTitle" aria-modal="true">
-    <div class="modal-header">
-      <div class="modal-title" id="summaryTitle">Resumen de pedido</div>
-      <button class="btn-ghost" id="closeSummaryTop" aria-label="Cerrar">✕</button>
-    </div>
-    <div class="modal-body">
-      <div id="summaryMeta" style="margin-bottom:10px; font-size:14px; color:#ddd;"></div>
-      <ul class="order-list" id="summaryList"></ul>
-      <div class="totals">
-        <span>Total</span>
-        <strong id="summaryTotal">COP $0</strong>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn-ghost" id="editOrderBtn">Editar</button>
-      <button class="btn-primary" id="confirmOrderBtn">Confirmar Pedido</button>
-    </div>
+<!-- Order Summary Modal -->
+<div id="summaryModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeSummary()">&times;</span>
+    <h2>Resumen de Pedido</h2>
+    <div id="summaryDetails"></div>
+    <div class="total-line" id="summaryTotal"></div>
+    <button id="confirmOrderBtn" onclick="confirmOrder()">Confirmar Pedido</button>
   </div>
+</div>
+
+<!-- Loading Overlay -->
+<div id="loadingOverlay">
+  <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/loading.png?raw=true" alt="Cargando...">
+  <div>Procesando pedido...</div>
 </div>
 
 <script>
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyDcQIS3wpF-5aCSOns7ufnn4bWVlqv8dlpB5AUCv_oFNvUZwqCnXoBmNLEbk-nCmEMoA/exec";
 
-/* ========== Utilities ========== */
-const fmtCOP = (n) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(Math.round(n || 0));
-function getColombiaNow(){
+// Auto-set delivery date based on Colombian time
+function setDeliveryDate() {
   const now = new Date();
-  const tz = { timeZone: "America/Bogota" };
-  return new Date(now.toLocaleString("en-US", tz));
-}
-function setDeliveryDateDefault(){
-  const nowCo = getColombiaNow();
-  const h = nowCo.getHours(), m = nowCo.getMinutes();
+  const options = { timeZone: "America/Bogota" };
+  const colombiaTime = new Date(now.toLocaleString("en-US", options));
+
+  const hours = colombiaTime.getHours();
+  const minutes = colombiaTime.getMinutes();
   const alertEl = document.getElementById("nextDayAlert");
 
-  // Before 12:30 -> same day. At 12:31 or later -> next day.
-  if (h > 12 || (h === 12 && m >= 31)) {
-    nowCo.setDate(nowCo.getDate() + 1);
+  if (hours > 12 || (hours === 12 && minutes >= 31)) {
+    colombiaTime.setDate(colombiaTime.getDate() + 1);
     alertEl.style.display = "block";
   } else {
     alertEl.style.display = "none";
   }
-  document.getElementById("deliveryDate").value = nowCo.toISOString().split("T")[0];
+
+  document.getElementById("deliveryDate").value = colombiaTime.toISOString().split("T")[0];
 }
-function recalcTotal(){
-  let subtotal = 0;
-  document.querySelectorAll("#menu input[type='number']").forEach(inp=>{
-    const qty = parseInt(inp.value,10) || 0;
-    const price = parseFloat(inp.dataset.price) || 0;
-    subtotal += qty * price;
-  });
-  document.getElementById("runningTotal").textContent = fmtCOP(subtotal);
-  return subtotal;
-}
-function collectItems(){
+setDeliveryDate();
+
+function showSummary() {
   const items = [];
-  document.querySelectorAll("#menu input[type='number']").forEach(inp=>{
-    const qty = parseInt(inp.value,10) || 0;
-    if (qty>0){
-      items.push({
-        name: inp.dataset.name,
-        price: parseFloat(inp.dataset.price) || 0,
-        quantity: qty
-      });
+  let total = 0;
+
+  document.querySelectorAll("#menu input[type='number']").forEach(input => {
+    const qty = parseInt(input.value, 10);
+    if (qty > 0) {
+      const price = parseFloat(input.dataset.price);
+      items.push({ name: input.dataset.name, quantity: qty, price });
+      total += price * qty;
     }
   });
-  return items;
-}
 
-/* ========== Summary Modal Logic ========== */
-const backdrop = document.getElementById("summaryBackdrop");
-const openSummaryBtn = document.getElementById("openSummaryBtn");
-const closeSummaryTop = document.getElementById("closeSummaryTop");
-const editOrderBtn = document.getElementById("editOrderBtn");
-const confirmOrderBtn = document.getElementById("confirmOrderBtn");
-const summaryList = document.getElementById("summaryList");
-const summaryTotalEl = document.getElementById("summaryTotal");
-const summaryMeta = document.getElementById("summaryMeta");
-
-function showSummary(){
-  // Validate required fields before showing summary
-  const deliveryDate = document.getElementById("deliveryDate").value;
-  const name = document.getElementById("name").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const items = collectItems();
-
-  if (!deliveryDate || !name || !phone || items.length === 0) {
-    alert("Por favor complete la fecha, nombre, número de WhatsApp y seleccione al menos un producto.");
+  if (items.length === 0 || !document.getElementById("name").value || !document.getElementById("phone").value) {
+    alert("Por favor complete nombre, WhatsApp y seleccione al menos un producto.");
     return;
   }
 
-  // Build summary list
-  summaryList.innerHTML = "";
-  let subtotal = 0;
-  items.forEach(i=>{
-    const line = i.price * i.quantity;
-    subtotal += line;
-    const li = document.createElement("li");
-    li.className = "order-line";
-    li.innerHTML = `<span>${i.name} × ${i.quantity}</span><strong>${fmtCOP(line)}</strong>`;
-    summaryList.appendChild(li);
-  });
-  summaryTotalEl.textContent = fmtCOP(subtotal);
+  const detailsEl = document.getElementById("summaryDetails");
+  detailsEl.innerHTML = items.map(i => `${i.quantity} x ${i.name} - $${i.price.toLocaleString()} COP`).join("<br>");
+  document.getElementById("summaryTotal").innerText = `Total: $${total.toLocaleString()} COP`;
 
-  // Meta (date, time, casa)
-  const casa = (document.getElementById("casa").value || '').trim();
-  const time = (document.getElementById("deliveryTime").value || '').trim();
-  const datePretty = new Date(document.getElementById("deliveryDate").value + "T00:00:00").toLocaleDateString('es-CO', { timeZone:'America/Bogota' });
-  summaryMeta.textContent = `Entrega: ${datePretty}${time ? " · " + time : ""}${casa ? " · Casa " + casa : ""}`;
-
-  // Show modal
-  backdrop.style.display = "flex";
-  backdrop.setAttribute("aria-hidden","false");
-}
-function hideSummary(){
-  backdrop.style.display = "none";
-  backdrop.setAttribute("aria-hidden","true");
+  document.getElementById("summaryModal").style.display = "block";
 }
 
-openSummaryBtn.addEventListener("click", showSummary);
-closeSummaryTop.addEventListener("click", hideSummary);
-editOrderBtn.addEventListener("click", hideSummary);
-backdrop.addEventListener("click", (e)=>{ if(e.target === backdrop) hideSummary(); });
+function closeSummary() {
+  document.getElementById("summaryModal").style.display = "none";
+}
 
-/* ========== Submit Flow with Spinner ========== */
-async function submitOrder(){
+async function confirmOrder() {
+  document.getElementById("summaryModal").style.display = "none";
+  document.getElementById("loadingOverlay").style.display = "flex";
+
   const deliveryDate = document.getElementById("deliveryDate").value;
-  const casa = document.getElementById("casa").value.trim();
-  const deliveryTime = document.getElementById("deliveryTime").value.trim();
-  const name = document.getElementById("name").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const notes = document.getElementById("notes").value.trim();
+  const casa = document.getElementById("casa").value;
+  const deliveryTime = document.getElementById("deliveryTime").value;
+  const name = document.getElementById("name").value;
+  const phone = document.getElementById("phone").value;
+  const notes = document.getElementById("notes").value;
 
-  const items = collectItems();
-  let totalQty = items.reduce((s,i)=> s + (parseInt(i.quantity,10)||0), 0);
-  let subtotal = items.reduce((s,i)=> s + ((parseFloat(i.price)||0)*(parseInt(i.quantity,10)||0)), 0);
+  const items = [];
+  let totalQty = 0;
+  let subtotal = 0;
+
+  document.querySelectorAll("#menu input[type='number']").forEach(input => {
+    const qty = parseInt(input.value, 10);
+    if (qty > 0) {
+      const price = parseFloat(input.dataset.price);
+      items.push({ name: input.dataset.name, price, quantity: qty });
+      totalQty += qty;
+      subtotal += price * qty;
+    }
+  });
 
   const orderData = {
     deliveryDate,
@@ -401,11 +316,6 @@ async function submitOrder(){
     subtotal: subtotal
   };
 
-  // Loading state
-  confirmOrderBtn.disabled = true;
-  const originalConfirmText = confirmOrderBtn.textContent;
-  confirmOrderBtn.innerHTML = `<span class="spinner"></span> Enviando…`;
-
   try {
     await fetch(APPS_SCRIPT_URL, {
       method: "POST",
@@ -414,47 +324,17 @@ async function submitOrder(){
       body: JSON.stringify(orderData)
     });
 
-    // Success UX
-    hideSummary();
-    alert("✅ Pedido enviado con éxito. ¡Gracias!");
-
-    // Reset form
-    document.querySelectorAll("#menu input[type='number']").forEach(inp=> inp.value = 0);
-    document.getElementById("casa").value = "";
-    document.getElementById("deliveryTime").value = "";
-    document.getElementById("name").value = "";
-    document.getElementById("phone").value = "";
-    document.getElementById("notes").value = "";
-    setDeliveryDateDefault();
-    recalcTotal();
-
-  } catch (err) {
-    alert("❌ Hubo un error al enviar el pedido. Inténtelo de nuevo.");
-  } finally {
-    confirmOrderBtn.disabled = false;
-    confirmOrderBtn.textContent = originalConfirmText;
+    setTimeout(() => {
+      document.getElementById("loadingOverlay").style.display = "none";
+      alert("Pedido enviado con éxito. ¡Gracias!");
+      document.querySelectorAll("input, select").forEach(el => el.value = "");
+      setDeliveryDate();
+    }, 1500);
+  } catch (error) {
+    document.getElementById("loadingOverlay").style.display = "none";
+    alert("Hubo un error al enviar el pedido. Inténtelo de nuevo.");
   }
 }
-
-confirmOrderBtn.addEventListener("click", submitOrder);
-
-/* ========== Init & Live Total ========== */
-setDeliveryDateDefault();
-recalcTotal();
-
-// Update alert visibility if user manually changes date
-document.getElementById("deliveryDate").addEventListener("change", ()=>{
-  const todayCo = getColombiaNow();
-  const chosen = new Date(document.getElementById("deliveryDate").value + "T00:00:00");
-  const todayYmd = todayCo.toISOString().split("T")[0];
-  const chosenYmd = chosen.toISOString().split("T")[0];
-  document.getElementById("nextDayAlert").style.display = (chosenYmd > todayYmd) ? "block" : "none";
-});
-
-// Recalc total on any quantity change
-document.querySelectorAll("#menu input[type='number']").forEach(inp=>{
-  inp.addEventListener("input", recalcTotal);
-});
 </script>
 </body>
 </html>
