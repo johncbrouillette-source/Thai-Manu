@@ -71,14 +71,6 @@
     text-align: center;
     font-weight: bold;
   }
-  .note {
-    color: #ff6b6b;
-    font-style: italic;
-    font-size: 0.9rem;
-    margin-top: -4px;
-    margin-bottom: 10px;
-    display: none; /* hidden by default */
-  }
   button {
     width: 100%;
     padding: 12px;
@@ -97,13 +89,12 @@
 <body>
 
 <div class="container">
-  <img src="https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/khao%20logo.png" alt="Logo" class="logo">
+  <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/khao%20logo.png?raw=true" alt="Logo" class="logo">
   <h1>Menú Tailandés</h1>
 
   <div class="delivery-section">
     <label for="deliveryDate">Fecha del Pedido:</label>
     <input type="date" id="deliveryDate">
-    <div id="nextDayNote" class="note">📅 Este pedido será entregado mañana — o seleccione otra fecha.</div>
 
     <label for="casa">Casa #:</label>
     <input type="text" id="casa">
@@ -121,24 +112,24 @@
 
   <div id="menu">
     <div class="menu-item">
-      <img src="https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/padthai.jpeg" alt="Pad Thai">
+      <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/padthai.jpeg?raw=true" alt="Pad Thai">
       <label>Pad Thai - $20.000 COP</label>
-      <input type="number" min="0" value="0" data-name="Pad Thai" data-price="20000">
+      <input type="number" min="0" value="0" data-name="Pad Thai" data-price="20000" data-code="PT">
     </div>
     <div class="menu-item">
-      <img src="https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/rice.jpeg" alt="Arroz Thai">
+      <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/rice.jpeg?raw=true" alt="Arroz Thai">
       <label>Arroz Thai - $19.000 COP</label>
-      <input type="number" min="0" value="0" data-name="Arroz Thai" data-price="19000">
+      <input type="number" min="0" value="0" data-name="Arroz Thai" data-price="19000" data-code="R">
     </div>
     <div class="menu-item">
-      <img src="https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/padcombo.png" alt="Combo Pad Thai">
+      <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/padcombo.png?raw=true" alt="Combo Pad Thai">
       <label>Combo Pad Thai - $26.000 COP</label>
-      <input type="number" min="0" value="0" data-name="Combo Pad Thai" data-price="26000">
+      <input type="number" min="0" value="0" data-name="Combo Pad Thai" data-price="26000" data-code="PTC">
     </div>
     <div class="menu-item">
-      <img src="https://raw.githubusercontent.com/khaoniaobistro/Thai-Manu/main/ricecombo.png" alt="Combo Arroz Thai">
+      <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/ricecombo.png?raw=true" alt="Combo Arroz Thai">
       <label>Combo Arroz Thai - $25.000 COP</label>
-      <input type="number" min="0" value="0" data-name="Combo Arroz Thai" data-price="25000">
+      <input type="number" min="0" value="0" data-name="Combo Arroz Thai" data-price="25000" data-code="RC">
     </div>
   </div>
 
@@ -157,53 +148,25 @@
 <script>
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbznFNKiUaSmXsiKSdVW4WUKYF9aLynFvvOujl7lj9x0n9e188qK0v47CD7A-KveRYNxkw/exec";
 
-/* ===== Helper: format YYYY-MM-DD ===== */
-function formatYMD(date) {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, '0');
-  const d = String(date.getDate()).padStart(2, '0');
-  return `${y}-${m}-${d}`;
-}
+// Auto set date based on time in Colombia
+function setDefaultDate() {
+  const now = new Date();
+  const options = { timeZone: "America/Bogota", hour: '2-digit', minute: '2-digit', hour12: false };
+  const timeStr = new Intl.DateTimeFormat('en-GB', options).format(now);
+  const [hour, minute] = timeStr.split(':').map(Number);
 
-/* ===== Get current time in Colombia ===== */
-function getBogotaNow() {
-  // Create a Date reflecting America/Bogota local time
-  const str = new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' });
-  return new Date(str);
-}
+  let defaultDate = new Date(now.toLocaleString("en-US", { timeZone: "America/Bogota" }));
 
-/* ===== Initialize date with cutoff logic and toggle note ===== */
-(function initDatePicker() {
-  const dateInput = document.getElementById("deliveryDate");
-  const note = document.getElementById("nextDayNote");
-
-  const nowCO = getBogotaNow();
-  const hours = nowCO.getHours();
-  const minutes = nowCO.getMinutes();
-
-  // Determine default date:
-  // Before 12:30 PM -> today
-  // 12:31 PM or later -> tomorrow
-  let defaultDate = new Date(nowCO);
-  const afterCutoff = (hours > 12) || (hours === 12 && minutes >= 31);
-  if (afterCutoff) {
+  if (hour > 12 || (hour === 12 && minute > 30)) {
     defaultDate.setDate(defaultDate.getDate() + 1);
+    document.getElementById("deliveryDate").insertAdjacentHTML('afterend', `<div style="color: yellow; font-size: 0.9em;">📅 Este pedido será entregado mañana - o seleccione otra fecha.</div>`);
   }
 
-  dateInput.value = formatYMD(defaultDate);
-  note.style.display = afterCutoff ? 'block' : 'none';
+  document.getElementById("deliveryDate").value = defaultDate.toISOString().split('T')[0];
+}
 
-  // If user changes date, hide note unless it's still set to "tomorrow" during after-cutoff
-  dateInput.addEventListener('change', () => {
-    const selected = dateInput.value;
-    const tomorrow = new Date(nowCO);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const isTomorrowSelected = selected === formatYMD(tomorrow);
-    note.style.display = (afterCutoff && isTomorrowSelected) ? 'block' : 'none';
-  });
-})();
+setDefaultDate();
 
-/* ===== Submit order ===== */
 async function submitOrder() {
   const deliveryDate = document.getElementById("deliveryDate").value;
   const casa = document.getElementById("casa").value;
@@ -221,7 +184,8 @@ async function submitOrder() {
     const qty = parseInt(input.value, 10);
     if (qty > 0) {
       const price = parseFloat(input.dataset.price);
-      items.push({ name: input.dataset.name, price, quantity: qty });
+      const code = input.dataset.code;
+      items.push({ name: input.dataset.name, price, quantity: qty, code });
       totalQty += qty;
       subtotal += price * qty;
     }
@@ -232,10 +196,13 @@ async function submitOrder() {
     return;
   }
 
-  const orderNames = items.map(i => i.name).join(', ');
   if (items.length === 1) {
     unitPrice = items[0].price;
+  } else {
+    unitPrice = items.map(i => `[${i.code}] ${i.price}`).join(', ');
   }
+
+  const orderNames = items.map(i => i.name).join(', ');
 
   const orderData = {
     deliveryDate,
@@ -259,6 +226,7 @@ async function submitOrder() {
     });
     alert("Pedido enviado con éxito. ¡Gracias!");
     document.querySelectorAll("input, select").forEach(el => el.value = "");
+    setDefaultDate();
   } catch (error) {
     alert("Hubo un error al enviar el pedido. Inténtelo de nuevo.");
   }
