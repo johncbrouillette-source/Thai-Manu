@@ -42,13 +42,17 @@
     margin: 8px 0 4px;
     font-weight: bold;
   }
-  input, select {
+  input, select, textarea {
     width: 100%;
     padding: 8px;
     border-radius: 6px;
     border: none;
     margin-bottom: 10px;
     font-size: 14px;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 40px;
   }
   .menu-item {
     display: flex;
@@ -159,7 +163,7 @@
     <label>WhatsApp:</label>
     <input type="text" id="phone">
     <label>Notas:</label>
-    <input type="text" id="notes">
+    <textarea id="notes" placeholder="Ej: Combo Pad Thai picante o sin picante"></textarea>
   </div>
 
   <button onclick="submitOrder()">Enviar Pedido</button>
@@ -240,7 +244,7 @@ async function submitOrder() {
       body: JSON.stringify(orderData)
     });
     alert("Pedido enviado con éxito. ¡Gracias!");
-    document.querySelectorAll("input, select").forEach(el => el.value = "");
+    document.querySelectorAll("input, select, textarea").forEach(el => el.value = "");
     setDeliveryDate();
   } catch (error) {
     alert("Hubo un error al enviar el pedido. Inténtelo de nuevo.");
