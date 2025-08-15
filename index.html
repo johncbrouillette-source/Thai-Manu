@@ -5,252 +5,111 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Pedido de Comida Tailandesa</title>
 
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
   :root{
     --bg:#000;
     --card:#1a1a1a;
-    --card2:#2a2a2a;
-    --text:#fff;
-    --accent:#28a745;
-    --accent-2:#218838;
+    --muted:#2a2a2a;
+    --accent:#FFD700;
+    --ok:#28a745;
+    --ok-hover:#218838;
     --warn:#ffcc00;
-    --gold:#FFD700;
-    --muted:#888;
-    --btn-gray:#444;
+    --text:#fff;
+    --muted-text:#bbb;
+    --danger:#e74c3c;
+    --border:#333;
   }
   *{box-sizing:border-box}
-  body { 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    margin: 0;
-    padding: 20px;
+  body{
+    font-family:'Open Sans',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    background:var(--bg); color:var(--text);
+    margin:0; padding:20px;
   }
-  .container {
-    max-width: 520px;
-    margin: 0 auto;
-    background: var(--card);
-    padding: 20px;
-    border-radius: 12px;
+  .container{
+    max-width:520px; margin:0 auto; background:var(--card);
+    padding:20px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.35);
   }
-  .logo {
-    display: block;
-    margin: 0 auto 20px;
-    max-width: 150px;
+  .logo{ display:block; margin:0 auto 16px; max-width:150px }
+  h1{ text-align:center; margin:0 0 14px; color:var(--accent); font-weight:700 }
+  .section{ margin-bottom:18px }
+  label{ display:block; margin:8px 0 6px; font-weight:700 }
+  input, select, textarea{
+    width:100%; padding:10px; border-radius:8px; border:1px solid var(--border);
+    background:#111; color:var(--text); font-size:14px; outline:none;
   }
-  h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: var(--gold);
-    font-family: 'Open Sans', sans-serif;
-  }
-  .delivery-section, .customer-section {
-    margin-bottom: 20px;
-  }
-  label {
-    display: block;
-    margin: 8px 0 6px;
-    font-weight: bold;
-  }
-  input, select, textarea {
-    width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-    margin-bottom: 10px;
-    font-size: 14px;
-    background:#111;
-    color: var(--text);
-  }
-  textarea { resize: vertical; min-height: 44px; }
-  .next-day-alert {
-    color: var(--warn);
-    font-size: 13px;
-    margin-top: -5px;
-    margin-bottom: 10px;
-  }
+  textarea{ min-height:70px; resize:vertical }
+  .hint{ color:var(--muted-text); font-size:12px; margin-top:4px }
 
-  /* Menu items */
-  .menu-item {
-    display: flex;
-    align-items: center;
-    background: var(--card2);
-    padding: 10px;
-    border-radius: 10px;
-    margin-bottom: 12px;
-    gap: 10px;
-  }
-  .menu-item img {
-    width: 60px;
-    height: 60px;
-    border-radius: 8px;
-    object-fit: cover;
-    flex-shrink: 0;
-  }
-  .menu-item .info {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-width: 0;
-  }
-  .menu-item .title {
-    flex: 1;
-    color: var(--text);
-    font-weight: 600;
-    font-size: 14px;
-  }
+  .next-day-alert{ color:var(--warn); font-size:13px; margin-top:6px; }
 
-  /* Quantity controls */
-  .qty {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+  .menu-item{
+    display:flex; align-items:center; gap:12px;
+    background:var(--muted); padding:10px; border-radius:10px; margin-bottom:12px;
+    border:1px solid var(--border);
   }
-  .qty button {
-    width: 34px;
-    height: 34px;
-    border-radius: 8px;
-    border: none;
-    background:#3a3a3a;
-    color:#fff;
-    font-size: 18px;
-    cursor: pointer;
-  }
-  .qty button:active { transform: translateY(1px); }
-  .qty input {
-    width: 54px;
-    text-align: center;
-    font-weight: 700;
-    background:#111;
-    margin: 0;
-  }
+  .menu-item img{ width:60px; height:60px; border-radius:8px; object-fit:cover }
+  .menu-item .name{ font-weight:700 }
+  .menu-item .price{ color:var(--muted-text); font-size:13px }
+  .qty{ margin-left:auto; display:flex; align-items:center; gap:6px }
+  .qty input[type="number"]{ width:70px; text-align:center; font-weight:700; background:#111 }
 
-  /* Total bar */
-  .total-bar{
-    background:#111;
-    border:1px solid #222;
-    border-radius:10px;
-    padding:12px 14px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    font-size:16px;
-    margin:14px 0 12px;
+  .total-row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:12px; background:#111; border:1px solid var(--border);
+    border-radius:10px; margin:16px 0 10px;
   }
-  .total-bar strong{ font-size:18px; }
+  .total-row .label{ color:var(--muted-text) }
+  .total-row .value{ font-weight:700; font-size:18px }
 
-  /* Buttons */
-  .btn {
-    width: 100%;
-    padding: 12px;
-    background: var(--accent);
-    border: none;
-    color: white;
-    font-size: 16px;
-    border-radius: 10px;
-    cursor: pointer;
+  .btn{
+    width:100%; padding:12px 14px; border:none; border-radius:10px; cursor:pointer;
+    background:var(--ok); color:#fff; font-size:16px; font-weight:700;
   }
-  .btn:hover { background: var(--accent-2); }
+  .btn:hover{ background:var(--ok-hover) }
 
-  .btn-gray{
-    background: var(--btn-gray);
+  /* Order Summary Modal */
+  .modal-backdrop{
+    position:fixed; inset:0; background:rgba(0,0,0,.6);
+    display:none; align-items:center; justify-content:center; z-index:1000;
   }
-  .btn-gray:hover{
-    background:#555;
-  }
-
-  /* Summary modal */
-  .overlay{
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    z-index: 50;
-  }
-  .overlay.show{ display:flex; }
   .modal{
-    width: 100%;
-    max-width: 520px;
-    background: var(--card);
-    border-radius: 14px;
-    padding: 16px;
+    width:min(520px,92vw); background:#141414; border:1px solid var(--border);
+    border-radius:12px; padding:18px;
   }
-  .modal h2{
-    margin: 0 0 10px;
-    font-size: 18px;
+  .modal h2{ margin:0 0 10px; font-size:20px }
+  .summary-items{ border-top:1px solid var(--border); margin-top:8px; padding-top:8px }
+  .summary-item{
+    display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px dashed #2a2a2a;
   }
-  .summary-list{
-    background:#111;
-    border:1px solid #222;
-    border-radius:10px;
-    padding:10px;
-    max-height: 50vh;
-    overflow:auto;
-  }
-  .summary-row{
-    display:flex;
-    justify-content:space-between;
-    padding:6px 0;
-    border-bottom:1px dashed #333;
-    font-size:14px;
-  }
-  .summary-row:last-child{ border-bottom:none; }
-  .summary-total{
-    margin-top:10px;
-    display:flex;
-    justify-content:space-between;
-    font-weight:700;
-    font-size:16px;
+  .summary-item:last-child{ border-bottom:none }
+  .modal-total{
+    display:flex; justify-content:space-between; font-weight:700; font-size:18px; margin-top:10px;
   }
   .modal-actions{
-    display:flex;
-    gap:10px;
-    margin-top:14px;
+    display:flex; gap:10px; margin-top:14px;
   }
+  .btn-secondary{
+    flex:1; background:#2f2f2f; color:#fff; border:1px solid var(--border);
+  }
+  .btn-secondary:hover{ filter:brightness(1.1) }
+  .btn-primary{ flex:1 }
 
-  /* Processing overlay (elephant spinner) */
+  /* Full-screen processing overlay with elephant spinner */
   .processing{
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.78);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-    flex-direction: column;
-    text-align:center;
-    padding:20px;
+    position:fixed; inset:0; background:rgba(0,0,0,.8);
+    display:none; align-items:center; justify-content:center; flex-direction:column;
+    z-index:2000;
   }
-  .processing.show{ display:flex; }
-  .processing img{
-    width: 84px;
-    height: 84px;
-    animation: spin 1.6s linear infinite;
-    margin-bottom: 12px;
-    border-radius: 50%;
+  .elephant{
+    width:90px; height:90px; margin-bottom:12px;
+    animation:spin 2s linear infinite;
   }
-  .processing .msg{
-    font-size: 16px;
-    color:#ddd;
-  }
-  @keyframes spin{
-    from{ transform: rotate(0deg); }
-    to{ transform: rotate(360deg); }
-  }
+  @keyframes spin{ from{transform:rotate(0)} to{transform:rotate(360deg)} }
+  .processing p{ margin:0; color:#fff; }
 
-  .version {
-    text-align: center;
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 16px;
-  }
+  .version{ text-align:center; font-size:12px; color:#888; margin-top:14px }
 </style>
 </head>
 <body>
@@ -259,15 +118,15 @@
   <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/khao%20logo.png?raw=true" alt="Logo" class="logo">
   <h1>Menú Tailandés</h1>
 
-  <div class="delivery-section">
+  <div class="section">
     <label for="deliveryDate">Fecha del Pedido:</label>
     <input type="date" id="deliveryDate">
     <div id="nextDayAlert" class="next-day-alert" style="display:none;">
-      📅 Este pedido será entregado mañana - o seleccione otra fecha.
+      📅 Este pedido será entregado mañana — o seleccione otra fecha.
     </div>
 
     <label for="casa">Casa #:</label>
-    <input type="text" id="casa" placeholder="Ej: 14B o 7">
+    <input type="text" id="casa" placeholder="Ej: 14B">
 
     <label for="deliveryTime">Hora de Entrega:</label>
     <select id="deliveryTime">
@@ -280,264 +139,222 @@
     </select>
   </div>
 
-  <div id="menu">
+  <div id="menu" class="section">
     <div class="menu-item">
       <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/padthai.jpeg?raw=true" alt="Pad Thai">
-      <div class="info">
-        <div class="title">Pad Thai - $20.000 COP</div>
-        <div class="qty" data-name="Pad Thai" data-price="20000">
-          <button type="button" class="btn-minus" aria-label="Disminuir">−</button>
-          <input type="number" min="0" value="0" inputmode="numeric" />
-          <button type="button" class="btn-plus" aria-label="Aumentar">+</button>
-        </div>
+      <div>
+        <div class="name">Pad Thai</div>
+        <div class="price">$20.000 COP</div>
+      </div>
+      <div class="qty">
+        <input type="number" min="0" value="0" data-name="Pad Thai" data-price="20000">
       </div>
     </div>
 
     <div class="menu-item">
       <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/rice.jpeg?raw=true" alt="Arroz Thai">
-      <div class="info">
-        <div class="title">Arroz Thai - $19.000 COP</div>
-        <div class="qty" data-name="Arroz Thai" data-price="19000">
-          <button type="button" class="btn-minus" aria-label="Disminuir">−</button>
-          <input type="number" min="0" value="0" inputmode="numeric" />
-          <button type="button" class="btn-plus" aria-label="Aumentar">+</button>
-        </div>
+      <div>
+        <div class="name">Arroz Thai</div>
+        <div class="price">$19.000 COP</div>
+      </div>
+      <div class="qty">
+        <input type="number" min="0" value="0" data-name="Arroz Thai" data-price="19000">
       </div>
     </div>
 
     <div class="menu-item">
       <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/padcombo.png?raw=true" alt="Combo Pad Thai">
-      <div class="info">
-        <div class="title">Combo Pad Thai - $26.000 COP</div>
-        <div class="qty" data-name="Combo Pad Thai" data-price="26000">
-          <button type="button" class="btn-minus" aria-label="Disminuir">−</button>
-          <input type="number" min="0" value="0" inputmode="numeric" />
-          <button type="button" class="btn-plus" aria-label="Aumentar">+</button>
-        </div>
+      <div>
+        <div class="name">Combo Pad Thai</div>
+        <div class="price">$26.000 COP</div>
+      </div>
+      <div class="qty">
+        <input type="number" min="0" value="0" data-name="Combo Pad Thai" data-price="26000">
       </div>
     </div>
 
     <div class="menu-item">
       <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/ricecombo.png?raw=true" alt="Combo Arroz Thai">
-      <div class="info">
-        <div class="title">Combo Arroz Thai - $25.000 COP</div>
-        <div class="qty" data-name="Combo Arroz Thai" data-price="25000">
-          <button type="button" class="btn-minus" aria-label="Disminuir">−</button>
-          <input type="number" min="0" value="0" inputmode="numeric" />
-          <button type="button" class="btn-plus" aria-label="Aumentar">+</button>
-        </div>
+      <div>
+        <div class="name">Combo Arroz Thai</div>
+        <div class="price">$25.000 COP</div>
+      </div>
+      <div class="qty">
+        <input type="number" min="0" value="0" data-name="Combo Arroz Thai" data-price="25000">
       </div>
     </div>
   </div>
 
-  <!-- Live total -->
-  <div class="total-bar">
-    <span>Total estimado:</span>
-    <strong id="totalValue">$0 COP</strong>
+  <div class="section">
+    <label>Nombre Completo:</label>
+    <input type="text" id="name" placeholder="Ej: María Díaz">
+    <label>WhatsApp:</label>
+    <input type="text" id="phone" placeholder="Ej: 300 123 4567">
+    <label for="notes">Notas:</label>
+    <textarea id="notes" placeholder="Ej: Combo Pad Thai picante o sin picante"></textarea>
   </div>
 
-  <!-- Review button -->
-  <button class="btn" id="reviewBtn">Enviar Pedido</button>
+  <div class="total-row">
+    <div class="label">Subtotal</div>
+    <div class="value" id="subtotalText">$0 COP</div>
+  </div>
+
+  <button id="reviewBtn" class="btn">Revisar pedido</button>
   <div class="version">v1.3</div>
 </div>
 
 <!-- Order Summary Modal -->
-<div class="overlay" id="summaryOverlay" aria-hidden="true">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="summaryTitle">
-    <h2 id="summaryTitle">Resumen del pedido</h2>
-    <div class="summary-list" id="summaryList"></div>
-    <div class="summary-total">
+<div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal">
+    <h2>Resumen del pedido</h2>
+    <div id="summaryList" class="summary-items"></div>
+    <div class="modal-total">
       <span>Total</span>
       <span id="summaryTotal">$0 COP</span>
     </div>
     <div class="modal-actions">
-      <button type="button" class="btn-gray" id="editBtn">Editar</button>
-      <button type="button" class="btn" id="confirmBtn">Confirmar pedido</button>
+      <button id="editBtn" class="btn btn-secondary">Editar</button>
+      <button id="confirmBtn" class="btn btn-primary">Confirmar pedido</button>
     </div>
   </div>
 </div>
 
-<!-- Processing Overlay (Elephant spinner) -->
-<div class="processing" id="processingOverlay" aria-hidden="true">
-  <img src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/loading.png?raw=true" alt="Procesando">
-  <div class="msg">Procesando pedido…</div>
+<!-- Processing overlay -->
+<div id="processing" class="processing" aria-hidden="true">
+  <img class="elephant" src="https://github.com/khaoniaobistro/Thai-Manu/blob/main/loading.png?raw=true" alt="Procesando">
+  <p>Procesando pedido…</p>
 </div>
 
 <script>
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_fGC8H8BVAHntpui882M4YJBpiKqADRifJnmzSFpcDtrCqOVgSpWTI_mDm2ZvDyhwrQ/exec";
 
-let isSubmitting = false;
+const $ = sel => document.querySelector(sel);
+const $$ = sel => document.querySelectorAll(sel);
 
-/* ---------- Date (Bogotá) & next-day alert ---------- */
-function getDefaultDateAndFlag(){
-  const now = new Date();
-  const col = new Date(now.toLocaleString("en-US", { timeZone: "America/Bogota" }));
-  const h = col.getHours();
-  const m = col.getMinutes();
-  const after1231 = (h > 12) || (h === 12 && m >= 31);
-  if (after1231) col.setDate(col.getDate() + 1);
-  const iso = col.toISOString().split("T")[0];
-  return { iso, after1231 };
-}
+let submitting = false;
+
+/* ===== Date logic (Bogotá) ===== */
 function setDeliveryDate(){
-  const { iso, after1231 } = getDefaultDateAndFlag();
-  const alertEl = document.getElementById("nextDayAlert");
-  document.getElementById("deliveryDate").value = iso;
-  alertEl.style.display = after1231 ? "block" : "none";
+  const now = new Date();
+  const colombiaTime = new Date(now.toLocaleString("en-US",{timeZone:"America/Bogota"}));
+  const h = colombiaTime.getHours();
+  const m = colombiaTime.getMinutes();
+  const alertEl = $("#nextDayAlert");
+
+  // After 12:31 pm → default to next day, else today
+  if (h > 12 || (h === 12 && m >= 31)) {
+    colombiaTime.setDate(colombiaTime.getDate()+1);
+    alertEl.style.display = "block";
+  } else {
+    alertEl.style.display = "none";
+  }
+  $("#deliveryDate").value = colombiaTime.toISOString().split("T")[0];
 }
 setDeliveryDate();
 
-// If user changes date, hide the alert unless it matches the default next-day case
-document.getElementById("deliveryDate").addEventListener("change", () => {
-  const chosen = document.getElementById("deliveryDate").value;
-  const def = getDefaultDateAndFlag();
-  const alertEl = document.getElementById("nextDayAlert");
-  alertEl.style.display = (def.after1231 && chosen === def.iso) ? "block" : "none";
-});
-
-/* ---------- Helpers ---------- */
+/* ===== Running subtotal ===== */
 function formatCOP(n){
-  return "$" + Number(n || 0).toLocaleString("es-CO") + " COP";
+  return "$" + Math.round(n).toLocaleString("es-CO") + " COP";
 }
-function collectItems(){
+function computeItems(){
   const items = [];
-  document.querySelectorAll(".qty").forEach(q => {
-    const input = q.querySelector("input");
-    const qty = parseInt(input.value, 10) || 0;
-    if (qty > 0){
-      const name = q.dataset.name;
-      const price = parseFloat(q.dataset.price);
-      items.push({ name, price, quantity: qty });
+  let qty = 0, subtotal = 0;
+  $$("#menu input[type='number']").forEach(input=>{
+    const q = parseInt(input.value,10) || 0;
+    if(q>0){
+      const price = parseFloat(input.dataset.price);
+      const name  = input.dataset.name;
+      items.push({name, price, quantity:q});
+      qty += q;
+      subtotal += price * q;
     }
   });
-  return items;
+  return {items, qty, subtotal};
 }
-function recalcTotal(){
-  const items = collectItems();
-  const subtotal = items.reduce((s, i) => s + (i.price * i.quantity), 0);
-  document.getElementById("totalValue").textContent = formatCOP(subtotal);
+function updateSubtotalUI(){
+  const {subtotal} = computeItems();
+  $("#subtotalText").textContent = formatCOP(subtotal);
 }
+updateSubtotalUI();
+$$("#menu input[type='number']").forEach(i=> i.addEventListener('input', updateSubtotalUI));
 
-/* ---------- Quantity controls ---------- */
-document.querySelectorAll(".qty").forEach(q => {
-  const input = q.querySelector("input");
-  q.querySelector(".btn-minus").addEventListener("click", () => {
-    const v = Math.max(0, (parseInt(input.value, 10) || 0) - 1);
-    input.value = v;
-    recalcTotal();
-  });
-  q.querySelector(".btn-plus").addEventListener("click", () => {
-    const v = Math.min(99, (parseInt(input.value, 10) || 0) + 1);
-    input.value = v;
-    recalcTotal();
-  });
-  input.addEventListener("input", () => {
-    let v = parseInt(input.value, 10);
-    if (!Number.isFinite(v) || v < 0) v = 0;
-    if (v > 99) v = 99;
-    input.value = v;
-    recalcTotal();
-  });
-});
-recalcTotal();
-
-/* ---------- Summary modal ---------- */
-const summaryOverlay = document.getElementById("summaryOverlay");
-const summaryList = document.getElementById("summaryList");
-const summaryTotal = document.getElementById("summaryTotal");
-const editBtn = document.getElementById("editBtn");
-const confirmBtn = document.getElementById("confirmBtn");
-const reviewBtn = document.getElementById("reviewBtn");
-const processingOverlay = document.getElementById("processingOverlay");
-
-reviewBtn.addEventListener("click", () => {
-  // Validate basics before showing summary
-  const name = document.getElementById("name").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const deliveryDate = document.getElementById("deliveryDate").value;
-  const items = collectItems();
-
-  if (!deliveryDate || !name || !phone || items.length === 0) {
-    alert("Por favor complete la fecha, nombre, número de WhatsApp y seleccione al menos un producto.");
+/* ===== Order Summary modal ===== */
+function openSummary(){
+  const {items, subtotal} = computeItems();
+  if ($("#name").value.trim()==='' || $("#phone").value.trim()==='' || !$("#deliveryDate").value || items.length===0){
+    alert("Por favor complete la fecha, nombre, WhatsApp y seleccione al menos un producto.");
     return;
   }
-
-  // Build summary
-  summaryList.innerHTML = "";
-  let subtotal = 0;
-  items.forEach(i => {
-    const line = i.price * i.quantity;
-    subtotal += line;
-    const row = document.createElement("div");
-    row.className = "summary-row";
-    row.innerHTML = `<span>${i.name} × ${i.quantity}</span><span>${formatCOP(line)}</span>`;
-    summaryList.appendChild(row);
+  const list = $("#summaryList");
+  list.innerHTML = '';
+  items.forEach(it=>{
+    const row = document.createElement('div');
+    row.className = 'summary-item';
+    const left = document.createElement('div');
+    left.textContent = `${it.name} × ${it.quantity}`;
+    const right = document.createElement('div');
+    right.textContent = formatCOP(it.price * it.quantity);
+    row.append(left, right);
+    list.appendChild(row);
   });
-  summaryTotal.textContent = formatCOP(subtotal);
+  $("#summaryTotal").textContent = formatCOP(subtotal);
+  $("#modalBackdrop").style.display = 'flex';
+}
+function closeSummary(){
+  $("#modalBackdrop").style.display = 'none';
+}
 
-  summaryOverlay.classList.add("show");
-});
+$("#reviewBtn").addEventListener('click', openSummary);
+$("#editBtn").addEventListener('click', closeSummary);
 
-editBtn.addEventListener("click", () => {
-  summaryOverlay.classList.remove("show");
-});
+/* ===== Submit with elephant spinner; single-click safe ===== */
+async function confirmAndSubmit(){
+  if (submitting) return;
+  submitting = true;
+  $("#confirmBtn").disabled = true;
 
-confirmBtn.addEventListener("click", async () => {
-  if (isSubmitting) return;
-  isSubmitting = true;
-  confirmBtn.disabled = true;
+  // Show spinner overlay
+  $("#processing").style.display = 'flex';
 
-  processingOverlay.classList.add("show");
-  summaryOverlay.classList.remove("show");
-
-  const deliveryDate = document.getElementById("deliveryDate").value;
-  const casa = document.getElementById("casa").value;
-  const deliveryTime = document.getElementById("deliveryTime").value;
-  const name = document.getElementById("name").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const notes = document.getElementById("notes").value.trim();
-
-  const items = collectItems();
-  const totalQty = items.reduce((s,i)=>s+i.quantity,0);
-  const subtotal = items.reduce((s,i)=>s+(i.price*i.quantity),0);
-
+  const {items, qty, subtotal} = computeItems();
   const orderData = {
-    deliveryDate,
-    casa,
-    deliveryTime,
-    name,
-    phone,
-    notes,
-    items, // Apps Script uses this to populate Column H correctly
-    order: items.map(i => i.name).join(', '),
-    quantity: totalQty,
+    deliveryDate: $("#deliveryDate").value,
+    casa: $("#casa").value,
+    deliveryTime: $("#deliveryTime").value,
+    name: $("#name").value,
+    phone: $("#phone").value,
+    notes: $("#notes").value,
+    items,
+    order: items.map(i=>i.name).join(', '),
+    quantity: qty,
     subtotal: subtotal
   };
 
-  try {
+  try{
     await fetch(APPS_SCRIPT_URL, {
       method: "POST",
       mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
+      headers: {"Content-Type":"application/json"},
       body: JSON.stringify(orderData)
     });
-    // Success UX
-    processingOverlay.classList.remove("show");
-    alert("Pedido enviado con éxito. ¡Gracias!");
 
-    // Reset form
-    document.querySelectorAll(".qty input").forEach(i => i.value = 0);
-    document.querySelectorAll("input, select, textarea").forEach(el => { if(el.id!=="deliveryDate") el.value = ""; });
+    // Success UI reset
+    closeSummary();
+    alert("Pedido enviado con éxito. ¡Gracias!");
+    document.querySelectorAll("input[type='text'], input[type='date'], select, textarea").forEach(el=> el.value='');
+    $$("#menu input[type='number']").forEach(i=> i.value = 0);
+    updateSubtotalUI();
     setDeliveryDate();
-    recalcTotal();
-  } catch (err) {
-    processingOverlay.classList.remove("show");
+  }catch(err){
     alert("Hubo un error al enviar el pedido. Inténtelo de nuevo.");
-  } finally {
-    isSubmitting = false;
-    confirmBtn.disabled = false;
+  }finally{
+    // Hide spinner and re-enable
+    $("#processing").style.display = 'none';
+    $("#confirmBtn").disabled = false;
+    submitting = false;
   }
-});
+}
+$("#confirmBtn").addEventListener('click', confirmAndSubmit);
 </script>
 </body>
 </html>
